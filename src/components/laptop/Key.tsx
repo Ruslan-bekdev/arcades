@@ -1,36 +1,49 @@
 import React, {FC} from 'react';
 import styled from '@emotion/styled';
 
-interface KeyWrapperProps {
-    isWide?: boolean;
+interface KeyProps {
+    label: string;
+    size: string;
+    position: string;
     isActive: boolean;
     isClickable: boolean;
-    label: string }
+    isCapsLockOn: boolean;
+}
 
-const KeyWrapper = styled.div<KeyWrapperProps>`
+const KeyButton = styled.div<KeyProps>`
     display: inline-block;
     min-width: 60px;
     margin: 0 5px;
+    padding: 0 5px;
+    box-sizing: border-box;
     border: 1px solid #999;
     border-radius: 6px;
-    text-align: center;
-    font-size: 16px;
+    font-size: 24px;
     user-select: none;
-    width: ${({isWide}) => (
-        isWide 
-            ?'100%' 
-            :'60px'
-    )};
-    height: ${({label}) => (
-        label === "▲" || label === "▼" 
-            ?'28px' 
-            :'60px'
-    )};
-    line-height: ${({label}) => (
-        label === "▲" || label === "▼"
-            ?'28px' 
-            :'60px'
-    )};
+    width: ${({size}) => {
+        switch (size) {
+            case 'big':
+                return '80%';
+            case 'max':
+                return '100%';
+            default: return '60px';
+        }
+    }};
+    height: ${({size}) => {
+        switch (size) {
+            case 'half':
+                return 60/2-2 + 'px';
+            default: return '60px';
+        }
+    }};
+    line-height: ${({size}) => {
+        switch (size) {
+            case 'half':
+                return 60/2-2 + 'px';
+            default: return '60px';
+        }
+    }};
+    text-align: ${({position}) => position};
     filter: ${({isClickable}) => (
         isClickable
             ?'brightness(1)'
@@ -51,24 +64,34 @@ const KeyWrapper = styled.div<KeyWrapperProps>`
             ?'scale(0.90)' 
             :'translateX(0) scale(1)'
     )};
+
+    ${({label, isCapsLockOn}) => label === 'CapsLk' && `
+        position: relative;
+
+        &::after {
+            content: '-';
+            position: absolute;
+            top: 0px;
+            right: 2px;
+            font-size: 64px;
+            line-height: 0;
+            color: ${isCapsLockOn ? '#fff' : '#777'};
+            filter: 'brightness(3)';
+        }
+    `}
 `;
 
-interface KeyProps {
-    label: string;
-    isWide?: boolean;
-    isActive: boolean;
-    isClickable: boolean;
-}
-
-const Key: FC<KeyProps> = ({label, isWide = false, isActive, isClickable}) => {
-    return <KeyWrapper
-        isWide={isWide}
+const Key: FC<KeyProps> = ({label, size, position, isActive, isClickable, isCapsLockOn}) => {
+    return <KeyButton
+        label={label}
+        size={size}
+        position={position}
         isActive={isActive}
         isClickable={isClickable}
-        label={label}
+        isCapsLockOn={isCapsLockOn}
     >
         {label}
-    </KeyWrapper>;
+    </KeyButton>;
 };
 
 export default Key;
