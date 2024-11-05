@@ -20,6 +20,7 @@ const KeyButton = styled.div<KeyProps>`
     border-radius: 6px;
     font-size: 24px;
     user-select: none;
+    transition: filter 0.2s ease-in-out;
     width: ${({size}) => {
         switch (size) {
             case 'big':

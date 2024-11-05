@@ -1,6 +1,8 @@
 import React, {FC, useEffect, useState} from 'react';
 import Key from './Key';
 import styled from '@emotion/styled';
+import {useSelector} from "react-redux";
+import {RootState} from "../../store";
 
 const KeyboardWrapper = styled.div`
     background-color: black;
@@ -39,9 +41,6 @@ const ArrowKeysWrapper = styled.div`
     flex-direction: column;
 `;
 
-interface KeyboardComponentProps {
-    clickableKeys: number[];
-}
 interface KeyData {
     label: string;
     index: number;
@@ -71,7 +70,8 @@ const HalfSizeKeys:FC<HalfSizeKeysProps> = ({row, activeKeys, clickableKeysState
         })}
     </ArrowKeysWrapper>
 }
-const Keyboard: FC<KeyboardComponentProps> = ({clickableKeys}) => {
+const Keyboard: FC = () => {
+    const {clickableKeys} = useSelector((state: RootState) => state.arcadesReducer);
     const keyMap: {[key: string]: number} = {
         '`': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '0': 10,
         '-': 11, '=': 12, 'Backspace': 13, 'Tab': 14, 'q': 15, 'w': 16, 'e': 17, 'r': 18, 't': 19,

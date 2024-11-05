@@ -1,6 +1,11 @@
 import React, {FC} from 'react';
 import Keyboard from './components/laptop/Keyboard';
 import styled from '@emotion/styled';
+import {useSelector, useDispatch} from "react-redux";
+import {RootState} from "./store";
+import {
+    setClickableKeys
+} from './store/arcadesSlice'
 
 const AppWrapper = styled.div`
     display: flex;
@@ -11,10 +16,18 @@ const AppWrapper = styled.div`
 `;
 
 const App: FC = () => {
+    const dispatch = useDispatch();
     const exampleClickableKeys:number[] = [16,29,30,31,55,56,57,58]
+    const setClickableKeysAction = () => {
+        dispatch(setClickableKeys(exampleClickableKeys));
+    }
+    const resetClickableKeysAction = () => {
+        dispatch(setClickableKeys([]));
+    }
+
     return (
         <AppWrapper>
-            <Keyboard clickableKeys={exampleClickableKeys}/>
+            <Keyboard/>
         </AppWrapper>
     );
 };
