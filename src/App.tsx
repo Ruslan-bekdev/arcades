@@ -1,13 +1,14 @@
 import React, {FC} from 'react';
-import Keyboard from './components/laptop/Keyboard';
+import Laptop from "./components/laptop/Laptop";
 import styled from '@emotion/styled';
 import {useSelector, useDispatch} from "react-redux";
 import {RootState} from "./store";
 import {
-    setClickableKeys
-} from './store/arcadesSlice'
+    setClickableKeys,
+    toggleRgbEffect,
+} from './store/keyboardSlice'
 
-const AppWrapper = styled.div`
+const AppWrapper = styled.main`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,17 +18,22 @@ const AppWrapper = styled.div`
 
 const App: FC = () => {
     const dispatch = useDispatch();
-    const exampleClickableKeys:number[] = [16,29,30,31,55,56,57,58]
+    const exampleClickableKeys:number[] = [16,29,30,31,55,56,57,58];
     const setClickableKeysAction = () => {
         dispatch(setClickableKeys(exampleClickableKeys));
     }
     const resetClickableKeysAction = () => {
         dispatch(setClickableKeys([]));
     }
-
+    const toggleRgbEffectAction = () => {
+        dispatch(toggleRgbEffect());
+    }
     return (
         <AppWrapper>
-            <Keyboard/>
+            <Laptop/>
+            {/*<button onClick={setClickableKeysAction}>ON</button>*/}
+            {/*<button onClick={resetClickableKeysAction}>OFF</button>*/}
+            {/*<button onClick={toggleRgbEffectAction}>RGB</button>*/}
         </AppWrapper>
     );
 };
