@@ -1,8 +1,8 @@
+import './App.css';
 import React, {FC} from 'react';
 import Laptop from "./components/laptop/Laptop";
 import styled from '@emotion/styled';
-import {useSelector, useDispatch} from "react-redux";
-import {RootState} from "./store";
+import {useDispatch} from "react-redux";
 import {
     setClickableKeys,
     toggleRgbEffect,
@@ -12,7 +12,7 @@ import {
     closeLaptop,
 } from './store/LaptopSlice';
 
-const AppWrapper = styled.main`
+const AppStyled = styled.main`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,30 +23,24 @@ const AppWrapper = styled.main`
 const App: FC = () => {
     const dispatch = useDispatch();
     const exampleClickableKeys:number[] = [16,29,30,31,55,56,57,58];
-    const setClickableKeysAction = () => {
-        dispatch(setClickableKeys(exampleClickableKeys));
-    }
-    const resetClickableKeysAction = () => {
-        dispatch(setClickableKeys([]));
-    }
-    const toggleRgbEffectAction = () => {
-        dispatch(toggleRgbEffect());
-    }
-    const openLaptopAction = () => {
-        dispatch(openLaptop());
-    }
-    const closeLaptopAction = () => {
-        dispatch(closeLaptop());
+    const actions = {
+        setClickableKeys: () => dispatch(setClickableKeys(exampleClickableKeys)),
+        resetClickableKeys: () => dispatch(setClickableKeys([])),
+        toggleRgbEffect: () => dispatch(toggleRgbEffect()),
+        openLaptop: () => dispatch(openLaptop()),
+        closeLaptop: () => dispatch(closeLaptop()),
     }
     return (
-        <AppWrapper>
+        <AppStyled>
             <Laptop/>
-            {/*<button onClick={setClickableKeysAction}>ON</button>*/}
-            {/*<button onClick={resetClickableKeysAction}>OFF</button>*/}
-            {/*<button onClick={toggleRgbEffectAction}>RGB</button>*/}
-            <button onClick={openLaptopAction}>OPEN</button>
-            <button onClick={closeLaptopAction}>CLOSE</button>
-        </AppWrapper>
+            <div className="tests">
+                <button onClick={actions.setClickableKeys}>ON</button>
+                <button onClick={actions.resetClickableKeys}>OFF</button>
+                <button onClick={actions.toggleRgbEffect}>RGB</button>
+                <button onClick={actions.openLaptop}>OPEN</button>
+                <button onClick={actions.closeLaptop}>CLOSE</button>
+            </div>
+        </AppStyled>
     );
 };
 

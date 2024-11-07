@@ -9,7 +9,6 @@ const DisplayStyled = styled.div`
 `;
 
 const Display: FC = () => {
-
     return <DisplayStyled>
         <p>Временный макет дисплея</p>
     </DisplayStyled>

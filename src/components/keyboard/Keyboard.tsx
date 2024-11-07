@@ -18,15 +18,19 @@ interface HalfSizeKeysProps {
     clickableKeysState: boolean[];
     isCapsLockOn: boolean;
 }
+interface KeyboardRowProps extends HalfSizeKeysProps{
+    i: number,
+    hasArrowsRendered: boolean,
+}
 
-const KeyboardWrapper = styled.div<KeyboardProps>`
+const KeyboardStyled = styled.div<KeyboardProps>`
     width: min-content;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: transform 1s ease-in-out;
     margin: 0 auto;
-
+    
     ${({rgbEffect}) =>
             rgbEffect
                 ? `
@@ -43,20 +47,20 @@ const KeyboardWrapper = styled.div<KeyboardProps>`
         100% { background-position: 0 50%; }
     };
 `;
-const KeyboardRow = styled.div`
+const KeyboardRowStyled = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
     margin: 5px 0;
 `;
-const ArrowKeysWrapper = styled.div`
+const ArrowKeysStyled = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
 `;
 
 const HalfSizeKeys:FC<HalfSizeKeysProps> = ({row, activeKeys, clickableKeysState, isCapsLockOn}) =>
-    <ArrowKeysWrapper>{
+    <ArrowKeysStyled>{
         row.map(({label, index, size, position}, i) => {
             return size === 'half'
                 ?<Key
@@ -69,7 +73,33 @@ const HalfSizeKeys:FC<HalfSizeKeysProps> = ({row, activeKeys, clickableKeysState
                     isCapsLockOn={isCapsLockOn}
                 />:''
         })}
-    </ArrowKeysWrapper>
+    </ArrowKeysStyled>
+const KeyboardRow:FC<KeyboardRowProps> = ({i, row, hasArrowsRendered, activeKeys, clickableKeysState, isCapsLockOn}) =>
+    <KeyboardRowStyled key={`row-${i}`}>{
+        row.map(({label, index, size, position}, i) => {
+            if (size === 'half') {
+                if (hasArrowsRendered) return;
+                hasArrowsRendered = true;
+                return <HalfSizeKeys
+                    key={`half-${index}-${i}`}
+                    row={row}
+                    activeKeys={activeKeys}
+                    clickableKeysState={clickableKeysState}
+                    isCapsLockOn={isCapsLockOn}
+                />
+            }
+            return <Key
+                key={`${index}-${label}-${i}`}
+                label={label}
+                size={size}
+                position={position}
+                isActive={activeKeys[index]}
+                isClickable={clickableKeysState[index]}
+                isCapsLockOn={isCapsLockOn}
+            />;
+        })}
+    </KeyboardRowStyled>
+
 
 const Keyboard: FC = () => {
     const {clickableKeys, rgbEffect} = useSelector((state: RootState) => state.keyboardReducer);
@@ -86,13 +116,6 @@ const Keyboard: FC = () => {
     const [isShiftOn, setIsShiftOn] = useState(false);
     const [currentKeyMap, setCurrentKeyMap] = useState<KeyData[][]>(keyboardLayout);
 
-    useEffect(() => {
-        const clickableKeysStates = Array(keyMap.length).fill(false);
-        clickableKeys.forEach(index => {
-            clickableKeysStates[index] = true;
-        });
-        setClickableKeysState(clickableKeysStates);
-    }, [clickableKeys]);
     useEffect(() => {
         const handleKeyClick = (event: KeyboardEvent) => {
             const keyIndex = keyMap[event.key] && keyMap[event.key] || keyMap[event.key.toLowerCase()];
@@ -141,45 +164,32 @@ const Keyboard: FC = () => {
         };
     }, []);
     useEffect(() => {
-        
-    }, []);
-    useEffect(() => {
         isCapsLockOn === isShiftOn
             ?setCurrentKeyMap(keyboardLayout)
             :setCurrentKeyMap(ToUpperCasedKeyboardLayout)
 
-    }, [isCapsLockOn, isShiftOn])
+    }, [isCapsLockOn, isShiftOn]);
+    useEffect(() => {
+        const clickableKeysStates = Array(keyMap.length).fill(false);
+        clickableKeys.forEach(index => {
+            clickableKeysStates[index] = true;
+        });
+        setClickableKeysState(clickableKeysStates);
+    }, [clickableKeys]);
 
-    return <KeyboardWrapper rgbEffect={rgbEffect}>{
+    return <KeyboardStyled rgbEffect={rgbEffect}>{
         currentKeyMap.map((row, i) => {
-            let hasHalfSizeKeyRendered: boolean;
-            if (i === 4) hasHalfSizeKeyRendered = false;
-            return <KeyboardRow key={`row-${i}`}>{
-                row.map(({label, index, size, position}, i) => {
-                    if (size === 'half') {
-                        if (hasHalfSizeKeyRendered) return;
-                        hasHalfSizeKeyRendered = true;
-                        return <HalfSizeKeys
-                            key={`half-${index}-${i}`}
-                            row={row}
-                            activeKeys={activeKeys}
-                            clickableKeysState={clickableKeysState}
-                            isCapsLockOn={isCapsLockOn}
-                        />
-                    }
-                    return <Key
-                        key={`${index}-${label}-${i}`}
-                        label={label}
-                        size={size}
-                        position={position}
-                        isActive={activeKeys[index]}
-                        isClickable={clickableKeysState[index]}
-                        isCapsLockOn={isCapsLockOn}
-                    />;
-                })}
-            </KeyboardRow>
+            let hasArrowsRendered: boolean = false;
+            return <KeyboardRow
+                i={i}
+                row={row}
+                hasArrowsRendered={hasArrowsRendered}
+                activeKeys={activeKeys}
+                clickableKeysState={clickableKeysState}
+                isCapsLockOn={isCapsLockOn}
+            />
         })}
-    </KeyboardWrapper>
+    </KeyboardStyled>
 };
 
 export default Keyboard;

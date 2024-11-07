@@ -1,0 +1,11 @@
+.tests {
+    position: fixed;
+    top: 0;
+    left: 0;
+    button{
+        width: 200px;
+        height: 75px;
+        font-size: 48px;
+        display: inline;
+    }
+}

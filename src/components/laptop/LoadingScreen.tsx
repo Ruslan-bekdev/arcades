@@ -1,7 +1,5 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import styled from "@emotion/styled";
-import {RootState} from "../../store";
-import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import {setLoadingStatus} from '../../store/LaptopSlice';
 
@@ -41,7 +39,6 @@ const LoadingScreenStyled = styled.div`
 
 const LoadingScreen: FC = () => {
     const dispatch = useDispatch();
-    const {isLoading} = useSelector((state: RootState) => state.laptopReducer);
 
     const handleAnimationEnd = (event: React.AnimationEvent<HTMLParagraphElement>) => {
         if (event.animationName === "rotate") {
@@ -52,7 +49,6 @@ const LoadingScreen: FC = () => {
     return (
         <LoadingScreenStyled>
             <p onAnimationEnd={handleAnimationEnd}>Временный макет загрузки</p>
-            {!isLoading && 'Загрузка завершена'}
         </LoadingScreenStyled>
     );
 };

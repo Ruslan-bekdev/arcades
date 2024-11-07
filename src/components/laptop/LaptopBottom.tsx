@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styled from "@emotion/styled";
 import Keyboard from "../keyboard/Keyboard";
 
-const LaptopBottomWrapper = styled.div`
+const LaptopBottomStyled = styled.div`
     width: 1122px;
     height: 600px;
     padding: 64px 36px 48px;
@@ -17,9 +17,9 @@ const LaptopBottomWrapper = styled.div`
     z-index: 500;
 `;
 
-const LaptopBottom: FC<{isOpen: boolean}> = ({isOpen}) =>
-    <LaptopBottomWrapper>
+const LaptopBottom: FC = () =>
+    <LaptopBottomStyled>
         <Keyboard/>
-    </LaptopBottomWrapper>
+    </LaptopBottomStyled>
 
 export default LaptopBottom;

@@ -10,7 +10,7 @@ interface KeyProps {
     isCapsLockOn: boolean;
 }
 
-const KeyButton = styled.div<KeyProps>`
+const KeyStyled = styled.div<KeyProps>`
     display: inline-block;
     min-width: 60px;
     margin: 0 5px;
@@ -83,7 +83,7 @@ const KeyButton = styled.div<KeyProps>`
 `;
 
 const Key: FC<KeyProps> = ({label, size, position, isActive, isClickable, isCapsLockOn}) => {
-    return <KeyButton
+    return <KeyStyled
         label={label}
         size={size}
         position={position}
@@ -92,7 +92,7 @@ const Key: FC<KeyProps> = ({label, size, position, isActive, isClickable, isCaps
         isCapsLockOn={isCapsLockOn}
     >
         {label}
-    </KeyButton>;
+    </KeyStyled>;
 };
 
 export default Key;

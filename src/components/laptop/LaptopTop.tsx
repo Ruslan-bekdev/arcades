@@ -3,9 +3,10 @@ import styled from "@emotion/styled";
 import LoadingScreen from "./LoadingScreen";
 import Display from "./Display";
 import {setLoadingStatus} from '../../store/LaptopSlice';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store";
 
-const LaptopTopWrapper = styled.div<{ rotation: string }>`
+const LaptopTopStyled = styled.div<{ rotation: string }>`
     width: 1122px;
     height: 600px;
     padding: 64px 36px 90px;
@@ -24,18 +25,21 @@ const LaptopTopWrapper = styled.div<{ rotation: string }>`
     transition: transform 2s ease-in-out;
 `;
 
-const LaptopTop: FC<{isOpen: boolean; isLoading: boolean}> = ({isOpen, isLoading}) => {
+const LaptopTop: FC = () => {
     const dispatch = useDispatch();
-    const [rotation, setRotation] = useState('-150deg');
+    const {isOpen, isLoading} = useSelector((state: RootState) => state.laptopReducer);
+    const rotationStartValue = '-150deg';
+    const rotationFinishValue = '-18deg';
+    const [rotation, setRotation] = useState(rotationStartValue);
     const [animationFinished, setAnimationFinished] = useState(true);
 
     useEffect(() => {
         if (isOpen) {
-            setRotation('-18deg');
+            setRotation(rotationFinishValue);
             setAnimationFinished(false);
             return
         }
-        setRotation('-150deg');
+        setRotation(rotationStartValue);
         setAnimationFinished(false);
     }, [isOpen]);
 
@@ -49,13 +53,11 @@ const LaptopTop: FC<{isOpen: boolean; isLoading: boolean}> = ({isOpen, isLoading
         setAnimationFinished(true);
     };
 
-    return (
-        <LaptopTopWrapper rotation={rotation} onTransitionEnd={handleAnimationEnd}>
-            {isOpen && animationFinished ?(
-                isLoading ?<LoadingScreen /> :<Display />
-            ) :null}
-        </LaptopTopWrapper>
-    );
+    return <LaptopTopStyled rotation={rotation} onTransitionEnd={handleAnimationEnd}>
+        {animationFinished && rotation === rotationFinishValue?(
+            isLoading ?<LoadingScreen /> :<Display />
+        ) :null}
+    </LaptopTopStyled>
 };
 
 export default LaptopTop;
