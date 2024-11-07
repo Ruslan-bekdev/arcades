@@ -2,10 +2,12 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface LaptopState {
     isOpen: boolean;
+    isLoading: boolean;
 }
 
 const initialState: LaptopState = {
-    isOpen: true,
+    isOpen: false,
+    isLoading: false,
 };
 
 const laptopSlice = createSlice({
@@ -16,6 +18,9 @@ const laptopSlice = createSlice({
         },
         closeLaptop: (state) => {
             state.isOpen = false;
+        },
+        setLoadingStatus: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
         }
     },
     initialState,
@@ -24,6 +29,7 @@ const laptopSlice = createSlice({
 export const {
     openLaptop,
     closeLaptop,
+    setLoadingStatus,
 } = laptopSlice.actions;
 
 export default laptopSlice.reducer;

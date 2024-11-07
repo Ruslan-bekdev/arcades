@@ -6,7 +6,11 @@ import {RootState} from "./store";
 import {
     setClickableKeys,
     toggleRgbEffect,
-} from './store/keyboardSlice'
+} from './store/keyboardSlice';
+import {
+    openLaptop,
+    closeLaptop,
+} from './store/LaptopSlice';
 
 const AppWrapper = styled.main`
     display: flex;
@@ -28,12 +32,20 @@ const App: FC = () => {
     const toggleRgbEffectAction = () => {
         dispatch(toggleRgbEffect());
     }
+    const openLaptopAction = () => {
+        dispatch(openLaptop());
+    }
+    const closeLaptopAction = () => {
+        dispatch(closeLaptop());
+    }
     return (
         <AppWrapper>
             <Laptop/>
             {/*<button onClick={setClickableKeysAction}>ON</button>*/}
             {/*<button onClick={resetClickableKeysAction}>OFF</button>*/}
             {/*<button onClick={toggleRgbEffectAction}>RGB</button>*/}
+            <button onClick={openLaptopAction}>OPEN</button>
+            <button onClick={closeLaptopAction}>CLOSE</button>
         </AppWrapper>
     );
 };

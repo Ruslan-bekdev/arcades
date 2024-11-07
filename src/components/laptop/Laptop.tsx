@@ -11,10 +11,10 @@ const LaptopWrapper = styled.div`
 `;
 
 const Laptop:FC = () => {
-    const {isOpen} = useSelector((state: RootState) => state.laptopReducer);
+    const {isOpen, isLoading} = useSelector((state: RootState) => state.laptopReducer);
 
     return <LaptopWrapper>
-        <LaptopTop isOpen={isOpen}/>
+        <LaptopTop isOpen={isOpen} isLoading={isLoading}/>
         <LaptopBottom isOpen={isOpen}/>
     </LaptopWrapper>
 }
